@@ -54,7 +54,7 @@ Update it after every approved decision and at the end of every session (current
 - Technology check: the tools named in this skill age. Before presenting options in stage 4 (stack, hosting, CMS, forms, visual-level libraries), search the web for the current state of the named tools and for newer or better alternatives released recently. Present a strong newcomer as an extra option, with one line on why it is worth considering and its source. If a named tool is deprecated, unmaintained, has worse license or pricing terms, or is no longer a common recommendation, tell the user with the source and offer to update this skill (remove or replace the tool). Change the skill only after the user approves. Keep it short: a few searches once per project, not every message.
 
 ## Companion skills (use if installed)
-- `frontend-design`: the stage 6 mockup and UI work in stage 7. Give it the visual direction approved with the client (for local service businesses usually trustworthy, clear and fast to contact), not its own bold default.
+- `frontend-design`: the second stage 6 mockup (the first is made without it, see stage 6) and UI work in stage 7. Give it the visual direction approved with the client (for local service businesses usually trustworthy, clear and fast to contact), not its own bold default.
 - `webapp-testing`: milestone checks in stage 7 and QA in stage 8: RTL, mobile layouts, forms, console errors, screenshots. Its scripts are ad-hoc checks; the project's permanent tests stay in TypeScript (Playwright).
 - `code-review`: once the project is on GitHub, run it on each milestone pull request before asking the user to review.
 - `website-assets`: the asset decisions in stage 6, and any asset that comes up later in the project.
@@ -107,7 +107,14 @@ For the client (`docs/client/02-scope.md`, Hebrew, short): what is included and 
 
 ## Stage 6: Design, content and plan (approval gate)
 - Sitemap and page structure.
-- Visual direction as a simple static HTML mockup of the home page (`docs/mockup/`), openable locally, for the user and the client to approve before building (use `frontend-design` if installed). To compare directions, make 2-3 mockups as separate files (`direction-a.html`, `direction-b.html`, ...). Share them through the preview deploy (Cloudflare Pages, or GitHub Pages for a public repo). The approved mockup becomes the starting point of the site. Do not use Claude Design for the site mockup; it is for marketing graphics (see `website-assets`).
+- Visual direction as simple static HTML mockups of the home page (`docs/mockup/`), openable locally, for the user and the client to approve before building. Always make at least two, as separate files:
+  - `direction-a.html`: without `frontend-design`. Build it first, before loading that skill, so its guidance does not leak into this one.
+  - `direction-b.html`: with `frontend-design`, loaded only after `direction-a.html` is done.
+  - Further directions (`direction-c.html`, ...) are optional; say for each whether it used `frontend-design`.
+  - When presenting the mockups, tell the user which file used `frontend-design` and which did not, and log it in `decisions.md`. Do not show this label inside the mockup pages, since the client sees them.
+  - If `frontend-design` is not installed, tell the user before making the mockups and ask whether to install it or make both without it.
+
+  Share them through the preview deploy (Cloudflare Pages, or GitHub Pages for a public repo). The approved mockup becomes the starting point of the site. Do not use Claude Design for the site mockup; it is for marketing graphics (see `website-assets`).
 - Visual level 2 or 3: include the motion in the mockup (the hero and one or two sections), so the user approves the feel before the build.
 - Content checklist (`docs/client/03-content.md`): every text, image and asset needed, who supplies it and by when. Missing content does not block the build: use clearly marked placeholders (`[חסר: ...]`).
 - Assets: run the `website-assets` skill for the asset types the site needs (logo, photos, icons, fonts, favicon and Open Graph image). It asks the user per type with options and a recommendation; its decisions go into the content checklist and `decisions.md`.
