@@ -5,10 +5,10 @@ description: "Use when the user brings a client brief or spec for a website (◊ê◊
 
 # Client website workflow
 
-The user is an experienced full-stack developer (14 years) who plans, decides and reviews; Claude writes all the code. These sites are side projects, mostly for friends, not a professional web business; the user's main focus is his smart-home business. Default to the lightest process and the lowest-maintenance result that meets the need, and protect the user's time: batch questions into one message, make minor decisions yourself, and keep messages to him short. This workflow runs in Claude Code. Talk with the user in Hebrew. Documents for the client are in Hebrew, in plain non-technical language. `CLAUDE.md` and code are in English.
+The user is an experienced developer who plans, decides and reviews; Claude writes all the code. These sites are side projects, often for friends or small local businesses, not the user's main work. Default to the lightest process and the lowest-maintenance result that meets the need, and protect the user's time: batch questions into one message, make minor decisions yourself, and keep messages to the user short. This workflow runs in Claude Code. Talk with the user in Hebrew. Documents for the client are in Hebrew, in plain non-technical language. `CLAUDE.md` and code are in English.
 
 ## Stage 0: Start or resume (every session)
-- Client projects live in the user's clients folder on his computer (ask once if unknown; default `~/clients/`). One folder per client: `<clients-root>/<client-slug>/`.
+- Client projects live in the user's clients folder on their computer (ask once if unknown; default `~/clients/`). One folder per client: `<clients-root>/<client-slug>/`.
 - If the folder already has `decisions.md`, read it first, tell the user in one line which stage the project is at and what is open, and continue from there. Do not restart earlier stages.
 - New project: create the folder, run `git init`, add a `.gitignore` (including `.env*`), and create `decisions.md` from the template below.
 - Later, when the user asks, create a private GitHub repo with `gh` and push. Never commit secrets, passwords or client credentials.
@@ -93,7 +93,7 @@ Always include a no-code alternative (Wix, WordPress or similar) when the client
 
 General principles: popular stacks with many public examples, TypeScript everywhere, no framework for a tiny single page, Tailwind and shadcn/ui over MUI, RTL from the start with logical CSS properties (`ms-`/`me-`, `start`/`end`). Run the technology check (Hard rules) and check current versions and setup before recommending. Present the recommendation with alternatives and wait for approval.
 
-Visual level: the user chooses one of three levels together with the technology (use AskUserQuestion when available, the recommended level first). For each level, state the cost in his own hours and the effect on mobile performance. Recommend level 1 for local service businesses unless the client asked for more; levels 2 and 3 fit the user's own sites and clients who want a showcase.
+Visual level: the user chooses one of three levels together with the technology (use AskUserQuestion when available, the recommended level first). For each level, state the cost in the user's own hours and the effect on mobile performance. Recommend level 1 for local service businesses unless the client asked for more; levels 2 and 3 fit the user's own sites and clients who want a showcase.
 1. Clean (default): CSS transitions and hover states only, no animation library.
 2. Polished: a few effects per page: title reveals (GSAP SplitText) and elements entering on scroll (GSAP ScrollTrigger), or native CSS (scroll-driven animations, View Transitions) with a fallback for browsers without support.
 3. Premium: scroll storytelling with GSAP ScrollTrigger and Lenis smooth scroll, using the `scroll-craft` skill if installed. Animated React components (React Bits, Aceternity UI, Magic UI) only when the stack is React, or Astro with React islands; check each library's license before using it on a client site. Motion (motion.dev) is an alternative to GSAP. References: Awwwards, Godly, Land-book, Codrops.
@@ -101,7 +101,7 @@ Visual level: the user chooses one of three levels together with the technology 
 Motion rules for levels 2 and 3: honor `prefers-reduced-motion`; give a way to pause anything that moves for more than 5 seconds (IS 5568); keep all content readable without JavaScript; never animate the call, WhatsApp or form buttons; test motion direction in RTL; keep Lighthouse mobile performance at 90 or above. GSAP, including all its plugins, is free for commercial use (confirm in the technology check).
 
 ## Stage 5: Scope and agreement
-Internal (`docs/internal/estimate.md`): milestones and the user's own time per milestone (his review, coordination and fixes; Claude does the build), checked against the time budget.
+Internal (`docs/internal/estimate.md`): milestones and the user's own time per milestone (their review, coordination and fixes; Claude does the build), checked against the time budget.
 
 For the client (`docs/client/02-scope.md`, Hebrew, short): what is included and what is not, what the client supplies and by when, recurring costs (domain, hosting, services) in the client's name and paid by the client, and what happens with changes after delivery (none included, or a small defined allowance). Ask the user once whether there is a price (it may be free, symbolic or a favour); add price and payment terms only if there is one. No maintenance package by default; offer one only if the user wants it. Wait for approval.
 

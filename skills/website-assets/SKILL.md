@@ -5,7 +5,7 @@ description: "Use when a website project needs visual assets (logo, photos, icon
 
 # Website assets
 
-The user decides; Claude lays out the options for each asset type with one recommendation, then sources, creates and logs the assets. Talk with the user in Hebrew; files, code and logs in English, client-facing text in Hebrew. Protect his time: one round of questions, minor choices decided by Claude and mentioned in the summary.
+The user decides; Claude lays out the options for each asset type with one recommendation, then sources, creates and logs the assets. Talk with the user in Hebrew; files, code and logs in English, client-facing text in Hebrew. Protect the user's time: one round of questions, minor choices decided by Claude and mentioned in the summary.
 
 Order of preference for every asset type: what the client already has -> free and ready-made -> Claude writes it in code (SVG, CSS) -> AI generation -> a designer.
 
@@ -18,7 +18,7 @@ From the sitemap or mockup, list the assets the site needs and what already exis
 
 ## Step 2: Ask, per asset type
 - Use AskUserQuestion when available: one question per asset type, up to 4 per call, the recommended option first and marked "(מומלץ)", each option one line with its cost and license note.
-- Otherwise send one Hebrew message with numbered options per type and the recommendation marked, so he can answer "הכל לפי ההמלצה".
+- Otherwise send one Hebrew message with numbered options per type and the recommendation marked, so the user can answer "הכל לפי ההמלצה".
 - Ask once whether there is a budget for paid tools and who pays (the user or the client).
 - Tool check before recommending: the tools named in this skill age fast (AI image tools change every few months). Search the web for the current pricing and commercial-use terms of the tools you are about to recommend, and for newer or better tools released recently. Present a strong newcomer as an extra option, with one line on why and its source. If a named tool has shut down, got worse terms or is no longer a common recommendation, tell the user with the source and offer to update this skill (remove or replace it). Change the skill only after the user approves. A few searches per project, not every message.
 
