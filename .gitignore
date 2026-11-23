@@ -1,0 +1,23 @@
+# Ignore everything by default
+/*
+
+# --- Whitelist: only hand-authored config ---
+!/.gitignore
+!/README.md
+!/CLAUDE.md
+!/settings.json
+!/keybindings.json
+!/skills/
+!/agents/
+!/commands/
+!/hooks/
+!/output-styles/
+!/statusline*.sh
+
+# Skills synced from the account (not authored locally)
+/skills/synced/
+
+# Safety net, even if force-added by mistake
+.credentials.json
+settings.local.json
+*.local.*
