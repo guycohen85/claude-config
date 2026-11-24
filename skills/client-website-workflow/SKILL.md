@@ -18,6 +18,7 @@ Folder layout:
 <client-slug>/
   decisions.md        # project state and decision log (Hebrew)
   CLAUDE.md           # generated in stage 6
+  DESIGN.md           # design tokens and design rules, generated in stage 6
   docs/client/        # client-facing Hebrew documents
   docs/internal/      # notes for the user only
   ...                 # site code, added from stage 7
@@ -72,7 +73,7 @@ Write `docs/client/01-questions.md` in Hebrew, plain language. About 6-8 require
 - local presence: Google Business Profile, service areas, WhatsApp button, reviews
 - languages and RTL, accessibility, privacy and cookies, forms that collect personal details
 - domain, hosting, email on the domain, analytics, existing accounts and branding
-- timeline, examples of sites the client likes (point the client to Dribbble, Land-book, Godly or Awwwards for inspiration if they have none)
+- timeline, examples of live sites the client likes, 2-3 of them, as links (if they have none, point them to galleries of real sites: Land-book, Lapa Ninja, Godly, Awwwards; for a specific section, SupaHero, Navbar Gallery, Pricing Pages, Footer Design). Prefer live sites over Dribbble or Behance concepts, which show a look but not how a real page is built.
 
 ## Stage 3: Gap check
 The user brings the client's answers. Summarize the final requirements, list what is still missing or contradictory and the assumptions made. The user decides whether to go back to the client.
@@ -88,7 +89,7 @@ Embed first: before escalating a type, check whether a hosted service covers the
 
 Always include a no-code alternative (Wix, WordPress or similar) when the client wants to manage everything alone. For a friend with no maintenance arrangement, it is often the best answer. Prefer near-zero maintenance in every option: static hosting, no servers to patch, managed services, accounts in the client's name. Before recommending type 2 or 3, say plainly what it adds in complexity and ongoing support, and offer the simpler option first.
 
-General principles: popular stacks with many public examples, TypeScript everywhere, no framework for a tiny single page, Tailwind and shadcn/ui over MUI, RTL from the start with logical CSS properties (`ms-`/`me-`, `start`/`end`). Run the technology check (Hard rules) and check current versions and setup before recommending. Present the recommendation with alternatives and wait for approval.
+General principles: popular stacks with many public examples, TypeScript everywhere, no framework for a tiny single page, Tailwind and shadcn/ui over MUI, RTL from the start: `<html lang="he" dir="rtl">` and logical CSS properties only (`ms-`/`me-`, `ps-`/`pe-`, `start`/`end`, `text-start`), never physical ones (`ml-`, `left-`, `text-left`). With shadcn/ui (types 2 and 3): `shadcn init --rtl` (or `shadcn migrate rtl` in an existing project) and wrap the app in its `DirectionProvider` with `rtl`, so menus, dialogs and popovers open in the right direction. Run the technology check (Hard rules) and check current versions and setup before recommending. Present the recommendation with alternatives and wait for approval.
 
 Visual level: the user chooses one of three levels together with the technology (use AskUserQuestion when available, the recommended level first). For each level, state the effect on mobile performance. Recommend level 1 for local service businesses unless the client asked for more; levels 2 and 3 fit the user's own sites and clients who want a showcase.
 1. Clean (default): CSS transitions and hover states only, no animation library.
@@ -105,22 +106,35 @@ For the client (`docs/client/02-scope.md`, Hebrew, short): what is included and 
 - Visual direction as simple static HTML mockups of the home page (`docs/mockup/`), openable locally, for the user and the client to approve before building. Always make at least two, as separate files:
   - `direction-a.html`: without `frontend-design`. Build it first, before loading that skill, so its guidance does not leak into this one.
   - `direction-b.html`: with `frontend-design`, loaded only after `direction-a.html` is done.
-  - `direction-c.html` (optional): only when the user sends an inspiration image (from Dribbble or elsewhere). Build it without `frontend-design`, so the image leads. Take the direction (layout, mood, typography, colors), never copy the design, and keep the project rules (RTL, accessibility, prominent call-to-action buttons). Log in `decisions.md` which image it was based on.
+  - `direction-c.html` (optional): only when the user sends an inspiration. Ask for a link to a live site first; an image is the fallback (a live site shows structure, spacing and behavior, an image only the look). Build it without `frontend-design`, so the inspiration leads. Take the direction (layout, mood, typography, colors), never copy the design, and keep the project rules (RTL, accessibility, prominent call-to-action buttons). Log in `decisions.md` which site or image it was based on.
   - Further directions (`direction-d.html`, ...) are optional; say for each whether it used `frontend-design`.
   - When presenting the mockups, tell the user which file used `frontend-design` and which did not, and log it in `decisions.md`. Do not show this label inside the mockup pages, since the client sees them.
   - If `frontend-design` is not installed, tell the user before making the mockups and ask whether to install it or make both without it.
+
+  - Banned patterns (apply to every direction, with or without `frontend-design`, and later to the build; they go into `DESIGN.md`):
+    - purple-to-blue or cyan gradients on buttons, headings or backgrounds; gradient text, especially on numbers
+    - glassmorphism combined with neon glow
+    - a centered hero with a single button, followed by a row of three identical cards (icon, title, two lines)
+    - the same corner radius and shadow on every element; boxes inside boxes
+    - vague headlines ("הפתרון המושלם עבורך", "בונים את העתיד"): say what the business does, for whom and where
+    - a default font (Heebo, Assistant, Inter) with no clear hierarchy between headings and body text
+    - decorative use of the accent color: it is for actions (call, WhatsApp, form) only
 
   Share them through the preview deploy (Cloudflare Pages, or GitHub Pages for a public repo). The approved mockup becomes the starting point of the site. Do not use Claude Design for the site mockup; it is for marketing graphics (see `website-assets`).
 - Visual level 2 or 3: include the motion in the mockup (the hero and one or two sections), so the user approves the feel before the build.
 - Content checklist (`docs/client/03-content.md`): every text, image and asset needed, who supplies it and by when. Missing content does not block the build: use clearly marked placeholders (`[חסר: ...]`).
 - Assets: run the `website-assets` skill for the asset types the site needs (logo, photos, icons, fonts, favicon and Open Graph image). It asks the user per type with options and a recommendation; its decisions go into the content checklist and `decisions.md`.
 - Data model, for types 2 and 3.
-- Generate `CLAUDE.md` from `decisions.md`: approved stack and versions, folder structure, conventions, RTL rules, "no new libraries without approval", how to run, test and deploy, and a pointer to `decisions.md` as the source of truth for decisions. Update the relevant part whenever a decision or change request changes it.
+- Lock the design before the build: take the tokens from the approved mockup and the asset decisions (colors in OKLCH, fonts and weights, type scale, spacing, radius, shadows) and write them:
+  - in code: the `@theme` block of the main Tailwind v4 CSS file (or CSS variables when there is no Tailwind). The build uses only these tokens, no ad-hoc values.
+  - in `DESIGN.md` (English, short): the tokens and where each one is used, the accent-color rule, component rules (buttons, cards, sections), the RTL rules, and the banned patterns list.
+- Generate `CLAUDE.md` from `decisions.md`: approved stack and versions, folder structure, conventions, RTL rules, "no new libraries without approval", "follow `DESIGN.md`; no colors, fonts or spacing outside the tokens", how to run, test and deploy, and a pointer to `decisions.md` as the source of truth for decisions. Update the relevant part whenever a decision or change request changes it.
 
 Summarize the plan and ask for explicit approval to start building.
 
 ## Stage 7: Build in milestones
 - One milestone at a time, on a branch, committed when done.
+- Build pages in order: first the page shell (header, layout grid, footer) on the tokens, then one section at a time (hero, social proof, services, contact...), never a whole page from a single prompt. Prefer layouts that break the template look (for example a two-column hero, an asymmetric 2x2 grid instead of three identical cards), within the approved mockup.
 - After each milestone: run the build and the tests, check the pages with `webapp-testing` if installed (RTL, mobile, forms), run `code-review` on the pull request once on GitHub, start the dev server so the user can look locally (once the project is on GitHub and connected to hosting, give the preview deploy link instead), and give a short summary: what was built, what to check, what is still a placeholder.
 - Wait for the user's review before continuing.
 - Tests: type 1, a passing build and a link check; types 2 and 3, Playwright smoke tests for the critical flows plus unit tests for business logic.
