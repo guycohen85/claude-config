@@ -37,12 +37,18 @@ From the sitemap or mockup, list the assets the site needs and what already exis
 
 ### Atmosphere, hero and background photos
 - Free stock: Unsplash, Pexels, Pixabay (commercial use allowed, no attribution required; downside: seen on many sites).
+- All three have free APIs: with an API key from the user, Claude can search and download candidates directly.
+- Pixabay now holds many AI-generated images of uneven quality: check each image by eye, and do not use identifiable people in a context that looks like an endorsement.
 - AI: Nano Banana by default; GPT Image as an alternative; Higgsfield if the user already has it.
 - Recommendation: stock first; AI when something specific is needed and not found.
 
 ### Icons
 - Open-source sets: Lucide (fits shadcn/ui), Tabler, Phosphor, Heroicons. Iconify aggregates many sets, but each set has its own license.
 - Recommendation: Lucide, and only one icon set per site.
+- When the site needs special icons (a distinctive style, or icons Lucide lacks), ask which route:
+  - A free set from Iconstore (iconstore.co): check that set's license and that it covers every icon the site needs before choosing it.
+  - The user sends an image of a style they like (from Iconstore or elsewhere), and Claude draws matching SVG icons. Works well for simple styles (line, geometric shapes); take the style only, never copy the icons themselves.
+  - Recraft with the style image as reference, when many consistent icons or a complex illustrated style are needed (paid plan for commercial use).
 
 ### Illustrations
 - unDraw (free, recolorable), Storyset (free tier requires attribution), Recraft for a consistent custom style.
@@ -51,6 +57,12 @@ From the sitemap or mockup, list the assets the site needs and what already exis
 ### Patterns, shapes and decorative backgrounds
 - Claude writes them as SVG or CSS. Generators: Haikei (waves, blobs), Hero Patterns.
 - Recommendation: Claude in code; free and fully controllable.
+
+### Colors
+- Order: colors from the client's logo or existing branding -> a palette the user found and liked (for example on Color Hunt, colorhunt.co) and sent to Claude -> a palette Claude proposes.
+- Check every palette for WCAG AA contrast (IS 5568) on the combinations the site will actually use: body text on background, text on buttons, links. If a combination fails, propose the closest shade that passes and keep the rest of the palette as chosen.
+- Realtime Colors (realtimecolors.com) previews a palette on a website layout; useful when the client needs to choose.
+- Recommendation: the client's existing colors when they exist; otherwise the user's chosen palette, adjusted for contrast.
 
 ### Fonts (Hebrew)
 - Google Fonts with Hebrew support: Heebo, Assistant, Rubik, Frank Ruhl Libre, Noto Sans Hebrew (free, commercial use allowed).
