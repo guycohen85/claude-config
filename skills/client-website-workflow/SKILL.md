@@ -12,6 +12,7 @@ The user is an experienced developer who plans, decides and reviews; Claude writ
 - If the folder already has `decisions.md`, read it first, tell the user in one line which stage the project is at and what is open, and continue from there. Do not restart earlier stages.
 - New project: create the folder, run `git init`, add a `.gitignore` (including `.env*`), and create `decisions.md` from the template below.
 - Later, when the user asks, create a private GitHub repo with `gh` and push. Never commit secrets, passwords or client credentials.
+- Whenever an account or service is opened or chosen (domain, hosting, forms, analytics, email), add a row to `docs/internal/accounts.md`: `| service | in whose name | login email | plan and cost | renewal date |`. Never write passwords there.
 
 Folder layout:
 ```
@@ -19,8 +20,10 @@ Folder layout:
   decisions.md        # project state and decision log (Hebrew)
   CLAUDE.md           # generated in stage 6
   DESIGN.md           # design tokens and design rules, generated in stage 6
+  docs/architecture.md  # sitemap, data flow, services, data model; generated in stage 6
   docs/client/        # client-facing Hebrew documents
   docs/internal/      # notes for the user only
+  docs/internal/accounts.md  # accounts and services, filled as they are set up
   ...                 # site code, added from stage 7
 ```
 
@@ -102,7 +105,7 @@ Motion rules for levels 2 and 3: honor `prefers-reduced-motion`; give a way to p
 For the client (`docs/client/02-scope.md`, Hebrew, short): what is included and what is not, what the client supplies and by when, recurring costs (domain, hosting, services) in the client's name and paid by the client, and what happens with changes after delivery (none included, or a small defined allowance). No maintenance package by default; offer one only if the user wants it. Wait for approval.
 
 ## Stage 6: Design, content and plan (approval gate)
-- Sitemap and page structure.
+- `docs/architecture.md` (English, short): sitemap and page structure, where each form sends its data and what happens next, external services, and environment variable names (never values). Types 2 and 3 also: data model, auth and permissions, integrations, and where each part runs. If the business uses its own terms, add a short "Terms" section mapping each Hebrew term to one English name for the code and one wording for the UI.
 - Visual direction as simple static HTML mockups of the home page (`docs/mockup/`), openable locally, for the user and the client to approve before building. Always make at least two, as separate files:
   - `direction-a.html`: without `frontend-design`. Build it first, before loading that skill, so its guidance does not leak into this one.
   - `direction-b.html`: with `frontend-design`, loaded only after `direction-a.html` is done.
@@ -124,11 +127,10 @@ For the client (`docs/client/02-scope.md`, Hebrew, short): what is included and 
 - Visual level 2 or 3: include the motion in the mockup (the hero and one or two sections), so the user approves the feel before the build.
 - Content checklist (`docs/client/03-content.md`): every text, image and asset needed, who supplies it and by when. Missing content does not block the build: use clearly marked placeholders (`[חסר: ...]`).
 - Assets: run the `website-assets` skill for the asset types the site needs (logo, photos, icons, fonts, favicon and Open Graph image). It asks the user per type with options and a recommendation; its decisions go into the content checklist and `decisions.md`.
-- Data model, for types 2 and 3.
 - Lock the design before the build: take the tokens from the approved mockup and the asset decisions (colors in OKLCH, fonts and weights, type scale, spacing, radius, shadows) and write them:
   - in code: the `@theme` block of the main Tailwind v4 CSS file (or CSS variables when there is no Tailwind). The build uses only these tokens, no ad-hoc values.
   - in `DESIGN.md` (English, short): the tokens and where each one is used, the accent-color rule, component rules (buttons, cards, sections), the RTL rules, and the banned patterns list.
-- Generate `CLAUDE.md` from `decisions.md`: approved stack and versions, folder structure, conventions, RTL rules, "no new libraries without approval", "follow `DESIGN.md`; no colors, fonts or spacing outside the tokens", how to run, test and deploy, and a pointer to `decisions.md` as the source of truth for decisions. Update the relevant part whenever a decision or change request changes it.
+- Generate `CLAUDE.md` from `decisions.md`: approved stack and versions, folder structure, conventions, RTL rules, "no new libraries without approval", "follow `DESIGN.md`; no colors, fonts or spacing outside the tokens", how to run, test and deploy, a pointer to `decisions.md` as the source of truth for decisions, and a pointer to `docs/architecture.md` for the site's structure (do not copy it into `CLAUDE.md`). Update the relevant part of `CLAUDE.md` and `docs/architecture.md` whenever a decision or change request changes it.
 
 Summarize the plan and ask for explicit approval to start building.
 
@@ -147,4 +149,4 @@ Checklist (use `webapp-testing`, if installed, for the mobile, RTL and forms che
 - privacy: privacy policy, cookie notice if trackers are used, and attention to Israeli privacy law for forms that collect personal details. Remind the user that Claude is not a lawyer and the current requirements should be checked.
 - backups (where there is a database or CMS), domain and hosting registered in the client's name
 
-The goal is that the client does not need the user for routine changes. Write `docs/client/04-handoff.md` in Hebrew: how to edit content, where things are hosted, who owns which account, recurring costs and renewal dates, maintenance notes, and how to request changes. Never put passwords in this document: tell the user to hand them over through a secure channel. Mark the project as delivered in `decisions.md`.
+The goal is that the client does not need the user for routine changes. Write `docs/client/04-handoff.md` in Hebrew, taking the accounts, costs and renewal dates from `docs/internal/accounts.md`: how to edit content, where things are hosted, who owns which account, recurring costs and renewal dates, maintenance notes, and how to request changes. Never put passwords in this document: tell the user to hand them over through a secure channel. Mark the project as delivered in `decisions.md`.
